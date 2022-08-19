@@ -1,5 +1,6 @@
 package com.kokonetworks.theapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,9 +8,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
-
+ArrayList<Integer> topScore=new ArrayList<Integer>();
     private Field field;
     private TextView tvLevel;
     private TextView tvScore;
@@ -32,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
     void setEventListeners(){
         btnStart.setOnClickListener(view -> {
             btnStart.setVisibility(View.GONE);
-            tvScore.setVisibility(View.GONE);
+            tvScore.setVisibility(View.VISIBLE);
             field.startGame();
+            tvScore.setText(String.format(getString(R.string.your_score), 0));
         });
+
+
 
         field.setListener(listener);
     }
@@ -46,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
             btnStart.setVisibility(View.VISIBLE);
             tvScore.setVisibility(View.VISIBLE);
             tvScore.setText(String.format(getString(R.string.your_score), score));
+            topScore.add(score);
+            startScoreScreen();
+        }
+
+        @Override
+        public void onUpdateScore(int score) {
+            tvScore.setText(String.format(getString(R.string.your_score), score));
         }
 
         @Override
@@ -53,4 +66,9 @@ public class MainActivity extends AppCompatActivity {
             tvLevel.setText(String.format(getString(R.string.level), level));
         }
     };
+
+    private void startScoreScreen() {
+        Intent intent= new Intent(MainActivity.this, ScoreActivity.class);
+        startActivity(intent);
+    }
 }

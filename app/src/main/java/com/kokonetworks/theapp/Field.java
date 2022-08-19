@@ -21,6 +21,9 @@ class Field extends LinearLayout {
     private Mole mole;
 
     private final int ACTIVE_TAG_KEY = 873374234;
+    private final int CLICKED_TAG_KEY = 873374235;
+    private boolean gameOver=false;
+    private boolean firstCircleDisplyed=false;
 
     public Field(Context context) {
         super(context);
@@ -67,6 +70,8 @@ class Field extends LinearLayout {
     }
 
     public void startGame() {
+        gameOver=false;
+        firstCircleDisplyed=false;
         resetScore();
         resetCircles();
         for (SquareButton squareButton : circles) {
@@ -74,11 +79,17 @@ class Field extends LinearLayout {
                 @Override
                 public void onClick(View view) {
                     boolean active = (boolean) view.getTag(ACTIVE_TAG_KEY);
+
+                    view.setTag(CLICKED_TAG_KEY,true);
                     if (active) {
-                        score += mole.getCurrentLevel() * 2;
+
+                        if(!gameOver) {
+                            score += mole.getCurrentLevel() * 2;
+                            listener.onUpdateScore(score);
+                        }
                     } else {
-                        mole.stopHopping();
-                        listener.onGameEnded(score);
+                        view.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.orange_oval));
+                       callGameOver();
                     }
                 }
             });
@@ -86,6 +97,13 @@ class Field extends LinearLayout {
 
         mole = new Mole(this);
         mole.startHopping();
+    }
+
+    private void callGameOver() {
+        gameOver=true;
+
+        mole.stopHopping();
+        listener.onGameEnded(score);
     }
 
     public int getCurrentCircle() {
@@ -96,15 +114,36 @@ class Field extends LinearLayout {
         for (SquareButton squareButton : circles) {
             squareButton.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.hole_inactive));
             squareButton.setTag(ACTIVE_TAG_KEY, false);
+            squareButton.setTag(CLICKED_TAG_KEY, false);
         }
     }
 
-    public void setActive(int index) {
+
+    public void setActive(int index,int highlitedIndex) {
         mainHandler.post(() -> {
-            resetCircles();
-            circles[index].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.hole_active));
-            circles[index].setTag(ACTIVE_TAG_KEY, true);
-            currentCircle = index;
+
+            if(firstCircleDisplyed==false|| (boolean)circles[currentCircle].getTag(CLICKED_TAG_KEY)){
+                resetCircles();
+                circles[index].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.hole_active));
+                circles[highlitedIndex].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.hole_highlighted));
+                circles[index].setTag(ACTIVE_TAG_KEY, true);
+                circles[index].setTag(CLICKED_TAG_KEY, false);
+                currentCircle = index;
+                firstCircleDisplyed=true;
+            }else{
+                callGameOver();
+            }
+        });
+    }
+    public void setOtherActive(int index) {
+        mainHandler.post(() -> {
+
+
+          //      resetCircles();
+                circles[index].setBackground(ContextCompat.getDrawable(getContext(), R.drawable.hole_highlighted));
+                circles[index].setTag(ACTIVE_TAG_KEY, true);
+
+
         });
     }
 
@@ -118,7 +157,7 @@ class Field extends LinearLayout {
 
     public interface Listener {
         void onGameEnded(int score);
-
+        void onUpdateScore(int score);
         void onLevelChange(int level);
     }
 }

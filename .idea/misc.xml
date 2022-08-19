@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/baseline_wb_sunny_24.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/hole_active.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/hole_highlighted.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/hole_inactive.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/orange_oval.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/drawable/red_oval.xml" value="0.196" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/layout/activity_score.xml" value="0.23802083333333332" />
         <entry key="..\:/EroBytes/Programing test/KOKOTest/app/src/main/res/layout/view_field.xml" value="0.1" />
       </map>
     </option>
